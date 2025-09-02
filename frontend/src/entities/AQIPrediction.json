@@ -1,0 +1,63 @@
+{
+  "name": "AQIPrediction",
+  "type": "object",
+  "properties": {
+    "prediction_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this prediction is for"
+    },
+    "prediction_period": {
+      "type": "string",
+      "enum": [
+        "6hours",
+        "48hours",
+        "15days",
+        "week"
+      ],
+      "description": "Prediction time period"
+    },
+    "CO2": {
+      "type": "number",
+      "description": "Predicted carbon dioxide levels"
+    },
+    "NOx": {
+      "type": "number",
+      "description": "Predicted nitrogen oxides levels"
+    },
+    "PM2_5": {
+      "type": "number",
+      "description": "Predicted PM2.5 particulate matter"
+    },
+    "VOCs": {
+      "type": "number",
+      "description": "Predicted volatile organic compounds"
+    },
+    "humidity": {
+      "type": "number",
+      "description": "Predicted humidity percentage"
+    },
+    "temperature": {
+      "type": "number",
+      "description": "Predicted temperature in Celsius"
+    },
+    "ppm": {
+      "type": "number",
+      "description": "Predicted parts per million"
+    },
+    "aqi_prediction": {
+      "type": "number",
+      "description": "Predicted Air Quality Index"
+    },
+    "confidence_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Prediction confidence percentage"
+    }
+  },
+  "required": [
+    "prediction_timestamp",
+    "prediction_period"
+  ]
+}
