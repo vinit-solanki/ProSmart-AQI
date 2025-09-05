@@ -151,7 +151,7 @@ export default function App() {
             </div>
             <div className="bg-black/20 p-5 rounded-lg text-center space-y-2">
               <h2 className="text-lg font-semibold">Data  Source Link:</h2>
-              <a href="">
+              <a href="https://github.com/vinit-solanki/ProSmart-AQI/blob/main/MODEL/dataairquality_data.csv">
               <button className="text-gray-900 bg-white border border-gray-300 rounded-md px-4 py-2 hover:bg-gray-100 cursor-pointer">Click Here</button>
               </a>
             </div>
