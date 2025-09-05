@@ -149,6 +149,12 @@ export default function App() {
               </h1>
               <p className="text-gray-600 mt-2">Real-time air quality monitoring and predictions</p>
             </div>
+            <div className="bg-black/20 p-5 rounded-lg text-center space-y-2">
+              <h2 className="text-lg font-semibold">Data  Source Link:</h2>
+              <a href="">
+              <button className="text-gray-900 bg-white border border-gray-300 rounded-md px-4 py-2 hover:bg-gray-100 cursor-pointer">Click Here</button>
+              </a>
+            </div>
             <div className="flex items-center gap-3">
               <LiveStatusBadge 
                 isConnected={isConnected} 
