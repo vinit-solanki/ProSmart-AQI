@@ -134,7 +134,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-sky-200">
       <div className="p-4 md:p-8">
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Header */}
@@ -253,7 +253,7 @@ export default function App() {
                       </div>
 
                       {/* Data Summary */}
-                      <Card className="bg-white border-gray-200 shadow-md">
+                      <Card className="mt-5 bg-white border-gray-200 shadow-md">
                         <CardHeader>
                           <CardTitle className="text-gray-900 flex items-center gap-2">
                             <Database className="w-5 h-5 text-teal-600" />
@@ -315,7 +315,7 @@ export default function App() {
                   {predictions.length > 0 ? (
                     <>
                       {/* Prediction Cards Grid */}
-                      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                      <div className="mt-2 grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {["6hours", "48hours", "week", "15days"].map((period, index) => (
                           <PredictionCard
                             key={period}
@@ -328,7 +328,7 @@ export default function App() {
 
                       {/* Prediction Charts */}
                       {(predictionsByPeriod.week?.length > 0 || predictionsByPeriod["48hours"]?.length > 0) && (
-                        <div className="grid md:grid-cols-2 gap-6">
+                        <div className="mt-5 grid md:grid-cols-2 gap-6">
                           {predictionsByPeriod.week?.length > 0 && (
                             <SensorChart
                               data={formatDataForChart(predictionsByPeriod.week, 'prediction_timestamp')}
@@ -351,7 +351,7 @@ export default function App() {
                       )}
 
                       {/* Prediction Analytics */}
-                      <Card className="bg-white border-gray-200 shadow-md">
+                      <Card className="mt-5 bg-white border-gray-200 shadow-md">
                         <CardHeader>
                           <CardTitle className="text-gray-900 flex items-center gap-2">
                             <Calendar className="w-5 h-5 text-blue-600" />
