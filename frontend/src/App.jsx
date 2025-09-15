@@ -145,7 +145,7 @@ export default function App() {
           >
             <div>
               <h1 className="text-3xl md:text-4xl font-bold bg-blue-600 bg-clip-text text-transparent">
-                ProMind
+                ProSmart
               </h1>
               <p className="text-gray-600 mt-2">Real-time air quality monitoring and predictions</p>
             </div>
