@@ -14,17 +14,12 @@ export default function DataSourceInfo({ metadata }) {
       transition={{ duration: 0.4 }}
     >
       <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
-        <CardHeader>
-          <CardTitle className="text-gray-900 flex items-center gap-2">
-            <Server className="w-5 h-5 text-blue-600" />
-            Data Sources
-          </CardTitle>
-        </CardHeader>
+   
         <CardContent>
           <div className="flex flex-wrap gap-2 mb-3">
             {metadata.data_sources?.map((source, index) => (
               <Badge 
-                key={index}
+                key={`source-${source}-${index}`}
                 className="bg-blue-100 text-blue-800 border-blue-300"
                 variant="outline"
               >

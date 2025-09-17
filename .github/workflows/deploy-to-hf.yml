@@ -1,0 +1,126 @@
+name: Deploy to Hugging Face Spaces
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'Deployment/**'
+      - '.github/workflows/deploy-to-hf.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        lfs: true
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install Hugging Face CLI
+      run: |
+        pip install --upgrade huggingface_hub[cli]
+
+    - name: Prepare deployment files
+      run: |
+        # Create deployment directory
+        mkdir -p hf_deployment
+        
+        # Copy deployment files
+        cp Deployment/app.py hf_deployment/
+        cp Deployment/enhanced_forecasting.py hf_deployment/
+        cp Deployment/README.md hf_deployment/
+        
+        # Use HF-specific requirements and Dockerfile
+        cp Deployment/requirements.hf.txt hf_deployment/requirements.txt
+        cp Deployment/Dockerfile.hf hf_deployment/Dockerfile
+        
+        # Copy any additional files if they exist
+        if [ -f "Deployment/aqi.json" ]; then
+          cp Deployment/aqi.json hf_deployment/
+        fi
+        
+        # Create .gitignore for HF Space
+        cat > hf_deployment/.gitignore << EOF
+        __pycache__/
+        *.pyc
+        *.pyo
+        *.pyd
+        .Python
+        env/
+        venv/
+        .env
+        .venv
+        pip-log.txt
+        pip-delete-this-directory.txt
+        .tox
+        .coverage
+        .coverage.*
+        .cache
+        nosetests.xml
+        coverage.xml
+        *.cover
+        *.log
+        .git
+        .mypy_cache
+        .pytest_cache
+        .hypothesis
+        .DS_Store
+        server.log
+        forecast_images/
+        enhanced_forecast_images/
+        forecast_reports/
+        EOF
+
+    - name: Login to Hugging Face
+      run: |
+        echo "${{ secrets.HF_TOKEN }}" | huggingface-cli login --token
+
+    - name: Clone HF Space repository
+      run: |
+        git clone https://huggingface.co/spaces/kunaldp379/ProsMartAQI hf_space
+      env:
+        HF_TOKEN: ${{ secrets.HF_TOKEN }}
+
+    - name: Update HF Space
+      run: |
+        # Copy new files to HF space
+        cp -r hf_deployment/* hf_space/
+        
+        cd hf_space
+        
+        # Configure git
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        
+        # Add all changes
+        git add .
+        
+        # Check if there are changes to commit
+        if git diff --staged --quiet; then
+          echo "No changes to deploy"
+        else
+          # Commit and push changes
+          git commit -m "🚀 Auto-deploy from GitHub Actions - $(date '+%Y-%m-%d %H:%M:%S')"
+          git push
+          echo "✅ Successfully deployed to Hugging Face Spaces!"
+        fi
+      env:
+        HF_TOKEN: ${{ secrets.HF_TOKEN }}
+
+    - name: Deployment Summary
+      run: |
+        echo "## 🚀 Deployment Summary" >> $GITHUB_STEP_SUMMARY
+        echo "- **Target**: Hugging Face Spaces" >> $GITHUB_STEP_SUMMARY
+        echo "- **Space URL**: https://huggingface.co/spaces/kunaldp379/ProsMartAQI" >> $GITHUB_STEP_SUMMARY
+        echo "- **App URL**: https://kunaldp379-prosmartaqi.hf.space" >> $GITHUB_STEP_SUMMARY
+        echo "- **Deployment Time**: $(date '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+        echo "- **Trigger**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY

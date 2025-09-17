@@ -9,6 +9,7 @@ import { FirebaseAPI } from "./components/services/firebaseApi";
 import AQIStatusCard from "./components/dashboard/AQIStatusCard";
 import MetricsGrid from "./components/dashboard/MetricsGrid";
 import SensorChart from "./components/dashboard/SensorChart";
+import MaximizableChart from "./components/dashboard/MaximizableChart";
 import PredictionCard from "./components/dashboard/PredictionCard";
 import LoadingSpinner from "./components/dashboard/LoadingSpinner";
 import LiveStatusBadge from "./components/dashboard/LiveStatusBadge";
@@ -16,7 +17,9 @@ import DataSourceInfo from "./components/dashboard/DataSourceInfo";
 
 export default function App() {
   const [sensorData, setSensorData] = useState([]);
+  const [currentSensorData, setCurrentSensorData] = useState(null);
   const [predictions, setPredictions] = useState([]);
+  const [forecastData, setForecastData] = useState([]);
   const [metadata, setMetadata] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -35,19 +38,30 @@ export default function App() {
     setError(null);
     
     try {
-      const [sensorResponse, predictionResponse, metadataResponse] = await Promise.all([
+      const [currentResponse, sensorResponse, predictionResponse, forecastResponse, metadataResponse] = await Promise.all([
+        FirebaseAPI.fetchCurrentData(),
         FirebaseAPI.fetchSensorData(),
         FirebaseAPI.fetchPredictions(),
+        FirebaseAPI.fetchForecastData(),
         FirebaseAPI.fetchMetadata()
       ]);
       
-      // Only update state if data has actually changed
+      // Update current data only if manually refreshing or first load
+      if (currentResponse && (isManualRefresh || !currentSensorData)) {
+        setCurrentSensorData(currentResponse);
+      }
+      
+      // Update historical data for charts
       if (FirebaseAPI.hasDataChanged(sensorResponse, sensorData)) {
         setSensorData(sensorResponse);
       }
       
       if (FirebaseAPI.hasDataChanged(predictionResponse, predictions)) {
         setPredictions(predictionResponse);
+      }
+
+      if (FirebaseAPI.hasDataChanged(forecastResponse, forecastData)) {
+        setForecastData(forecastResponse);
       }
       
       if (JSON.stringify(metadataResponse) !== JSON.stringify(metadata)) {
@@ -64,17 +78,29 @@ export default function App() {
     
     setIsLoading(false);
     setIsRefreshing(false);
-  }, [sensorData, predictions, metadata]);
+  }, [sensorData, currentSensorData, predictions, forecastData, metadata]);
 
   useEffect(() => {
+    // Load data only once on mount
     loadData();
     
-    // Increased interval to 60 seconds to reduce API calls
-    const interval = setInterval(() => loadData(), 60000);
-    return () => clearInterval(interval);
-  }, [loadData]);
+    // Set up polling with the Firebase API's built-in polling method
+    const stopPolling = FirebaseAPI.startPolling((newCurrentData) => {
+      // Only update if data has actually changed
+      if (FirebaseAPI.hasCurrentDataChanged(newCurrentData, currentSensorData)) {
+        setCurrentSensorData(newCurrentData);
+        setLastUpdated(new Date());
+        setIsConnected(true);
+        setError(null);
+      }
+    }, 30000); // Poll every 30 seconds
+    
+    return () => {
+      stopPolling();
+    };
+  }, []); // Empty dependency array - only run once on mount
 
-  const currentData = useMemo(() => sensorData[0], [sensorData]);
+  const currentData = useMemo(() => currentSensorData || sensorData[0], [currentSensorData, sensorData]);
   const currentAQI = useMemo(() => currentData?.aqi_calculated || 0, [currentData]);
   
   const predictionsByPeriod = useMemo(() => {
@@ -87,18 +113,58 @@ export default function App() {
 
   const getAQITrend = useCallback(() => {
     if (sensorData.length < 2) return 0;
+    
     const current = sensorData[0]?.aqi_calculated || 0;
-    const previous = sensorData[1]?.aqi_calculated || 0;
-    if (previous === 0) return 0;
-    return ((current - previous) / previous * 100).toFixed(1);
+    const currentTime = new Date(sensorData[0]?.timestamp);
+    const twentyFourHoursAgo = new Date(currentTime.getTime() - (24 * 60 * 60 * 1000));
+    
+    // Find data point closest to 24 hours ago
+    let previousAQI = null;
+    let closestTimeDiff = Infinity;
+    
+    for (let i = 1; i < sensorData.length; i++) {
+      const dataTime = new Date(sensorData[i]?.timestamp);
+      const timeDiff = Math.abs(dataTime.getTime() - twentyFourHoursAgo.getTime());
+      
+      if (timeDiff < closestTimeDiff) {
+        closestTimeDiff = timeDiff;
+        previousAQI = sensorData[i]?.aqi_calculated || 0;
+      }
+    }
+    
+    if (!previousAQI || previousAQI === 0) return 0;
+    return ((current - previousAQI) / previousAQI * 100).toFixed(1);
   }, [sensorData]);
 
   const formatDataForChart = useCallback((data, timestampKey = 'timestamp') => {
-    return data?.map(item => ({
-      ...item,
-      timestamp: item[timestampKey] || item.prediction_timestamp
-    })) || [];
+    if (!data || data.length === 0) return [];
+    
+    return data.map((item, index) => {
+      const timestamp = item[timestampKey] || item.prediction_timestamp;
+      const date = new Date(timestamp);
+      
+      // Return a stable object structure with unique key
+      return {
+        id: `${timestamp || 'unknown'}-${index}`, // Add unique ID for React keys
+        timestamp: timestamp,
+        time: date.toLocaleTimeString(),
+        fullDate: date.toLocaleString(),
+        CO: item.CO || 0,
+        NO2: item.NO2 || 0,
+        O3: item.O3 || 0,
+        PM10: item.PM10 || 0,
+        PM2_5: item.PM2_5 || 0,
+        SO2: item.SO2 || 0,
+        TEMP: item.TEMP || 0,
+        aqi_calculated: item.aqi_calculated || 0
+      };
+    });
   }, []);
+
+  // Memoized chart data to prevent unnecessary re-renders
+  const chartData = useMemo(() => {
+    return formatDataForChart(sensorData);
+  }, [sensorData, formatDataForChart]);
 
   const sensorAnalytics = useMemo(() => {
     if (sensorData.length === 0) return { totalRecords: 0, avgAQI: 0, peakPM25: 0, dateRange: null };
@@ -108,22 +174,33 @@ export default function App() {
       avgAQI: (sensorData.reduce((acc, item) => acc + (item.aqi_calculated || 0), 0) / sensorData.length).toFixed(0),
       peakPM25: Math.max(...sensorData.map(item => item.PM2_5 || 0)).toFixed(1),
       dateRange: {
-        start: new Date(sensorData[sensorData.length - 1]?.timestamp).toLocaleDateString(),
-        end: new Date(sensorData[0]?.timestamp).toLocaleDateString()
+        start: sensorData[sensorData.length - 1]?.timestamp 
+          ? new Date(sensorData[sensorData.length - 1].timestamp).toLocaleDateString()
+          : 'Unknown',
+        end: sensorData[0]?.timestamp 
+          ? new Date(sensorData[0].timestamp).toLocaleDateString()
+          : 'Unknown'
       }
     };
   }, [sensorData]);
 
-  const predictionAnalytics = useMemo(() => {
+  const forecastAnalytics = useMemo(() => {
+    if (forecastData.length === 0) {
+      return {
+        avgAQI: '--',
+        peakPM25: '--',
+        avgCO: '--',
+        peakNO2: '--'
+      };
+    }
+
     return {
-      next6hAQI: predictionsByPeriod["6hours"]?.[0]?.aqi_prediction?.toFixed(0) || '--',
-      peak48hPM25: predictionsByPeriod["48hours"]?.length > 0 
-        ? Math.max(...predictionsByPeriod["48hours"].map(p => p.PM2_5 || 0)).toFixed(1)
-        : '--',
-      weeklyTrend: getAQITrend() > 0 ? 'Worsening' : 'Improving',
-      modelConfidence: predictionsByPeriod.week?.[0]?.confidence_score?.toFixed(0) || '--'
+      avgAQI: (forecastData.reduce((acc, item) => acc + (item.aqi_calculated || 0), 0) / forecastData.length).toFixed(0),
+      peakPM25: Math.max(...forecastData.map(item => item.PM2_5 || 0)).toFixed(1),
+      avgCO: (forecastData.reduce((acc, item) => acc + (item.CO || 0), 0) / forecastData.length).toFixed(1),
+      peakNO2: Math.max(...forecastData.map(item => item.NO2 || 0)).toFixed(1)
     };
-  }, [predictionsByPeriod, getAQITrend]);
+  }, [forecastData]);
 
   if (isLoading) {
     return (
@@ -145,7 +222,7 @@ export default function App() {
           >
             <div>
               <h1 className="text-3xl md:text-4xl font-bold bg-blue-600 bg-clip-text text-transparent">
-                ProSmart
+                ProSmart-AQI
               </h1>
               <p className="text-gray-600 mt-2">Real-time air quality monitoring and predictions</p>
             </div>
@@ -194,7 +271,7 @@ export default function App() {
           />
 
           {/* Metrics Grid */}
-          <MetricsGrid sensorData={currentData} />
+          <MetricsGrid sensorData={currentData} historicalData={sensorData} />
 
           {/* Main Content Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
@@ -215,46 +292,79 @@ export default function App() {
               </TabsTrigger>
             </TabsList>
 
-            <AnimatePresence mode="wait">
-              <TabsContent value="current" className="space-y-6">
-                <motion.div
-                  key="current"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  transition={{ duration: 0.3 }}
-                >
+            <TabsContent value="current" className="space-y-6">
+              <motion.div
+                key="current"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3 }}
+              >
                   {sensorData.length > 0 ? (
                     <>
                       {/* Historical Charts Grid */}
-                      <div className="grid md:grid-cols-2 gap-6">
-                        <SensorChart
-                          data={formatDataForChart(sensorData)}
+                      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <MaximizableChart
+                          key="pm2_5-chart"
+                          data={chartData}
                           title="PM2.5 Particulate Matter"
                           dataKey="PM2_5"
                           color="#f97316"
                           type="area"
+                          delay={0}
                         />
-                        <SensorChart
-                          data={formatDataForChart(sensorData)}
-                          title="Air Quality Index (AQI)"
-                          dataKey="aqi_calculated"
-                          color="#0ea5e9"
-                          type="line"
-                        />
-                        <SensorChart
-                          data={formatDataForChart(sensorData)}
-                          title="Carbon Dioxide (CO2)"
-                          dataKey="CO2"
-                          color="#eab308"
+                        <MaximizableChart
+                          key="pm10-chart"
+                          data={chartData}
+                          title="PM10 Particulate Matter"
+                          dataKey="PM10"
+                          color="#8b5cf6"
                           type="area"
+                          delay={0.1}
                         />
-                        <SensorChart
-                          data={formatDataForChart(sensorData)}
-                          title="Volatile Organic Compounds"
-                          dataKey="VOCs"
-                          color="#22c55e"
+                        <MaximizableChart
+                          key="so2-chart"
+                          data={chartData}
+                          title="Sulfur Dioxide (SO2)"
+                          dataKey="SO2"
+                          color="#ef4444"
                           type="line"
+                          delay={0.2}
+                        />
+                        <MaximizableChart
+                          key="no2-chart"
+                          data={chartData}
+                          title="Nitrogen Dioxide (NO2)"
+                          dataKey="NO2"
+                          color="#f59e0b"
+                          type="line"
+                          delay={0.3}
+                        />
+                        <MaximizableChart
+                          key="o3-chart"
+                          data={chartData}
+                          title="Ozone (O3)"
+                          dataKey="O3"
+                          color="#10b981"
+                          type="line"
+                          delay={0.4}
+                        />
+                        <MaximizableChart
+                          key="temp-chart"
+                          data={chartData}
+                          title="Temperature"
+                          dataKey="TEMP"
+                          color="#f97316"
+                          type="area"
+                          delay={0.5}
+                        />
+                        <MaximizableChart
+                          key="co-chart"
+                          data={chartData}
+                          title="Carbon Monoxide (CO)"
+                          dataKey="CO"
+                          color="#6b7280"
+                          type="line"
+                          delay={0.6}
                         />
                       </div>
 
@@ -310,51 +420,78 @@ export default function App() {
                 </motion.div>
               </TabsContent>
 
-              <TabsContent value="predictions" className="space-y-6">
-                <motion.div
-                  key="predictions"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {predictions.length > 0 ? (
+            <TabsContent value="predictions" className="space-y-6">
+              <motion.div
+                key="predictions"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                  {forecastData.length > 0 ? (
                     <>
-                      {/* Prediction Cards Grid */}
-                      <div className="mt-2 grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {["6hours", "48hours", "week", "15days"].map((period, index) => (
-                          <PredictionCard
-                            key={period}
-                            prediction={predictionsByPeriod[period]?.[0]}
-                            period={period}
-                            delay={index * 0.1}
-                          />
-                        ))}
+                      {/* 48 Hours Prediction Title */}
+                      <div className="mb-6">
+                        <h2 className="text-2xl font-bold text-gray-900 mb-2">48 Hours Prediction</h2>
+                        <p className="text-gray-600">AI-powered forecast for the next 48 hours based on current sensor data</p>
                       </div>
 
-                      {/* Prediction Charts */}
-                      {(predictionsByPeriod.week?.length > 0 || predictionsByPeriod["48hours"]?.length > 0) && (
-                        <div className="mt-5 grid md:grid-cols-2 gap-6">
-                          {predictionsByPeriod.week?.length > 0 && (
-                            <SensorChart
-                              data={formatDataForChart(predictionsByPeriod.week, 'prediction_timestamp')}
-                              title="Weekly AQI Predictions"
-                              dataKey="aqi_prediction"
-                              color="#3b82f6"
-                              type="area"
-                            />
-                          )}
-                          {predictionsByPeriod["48hours"]?.length > 0 && (
-                            <SensorChart
-                              data={formatDataForChart(predictionsByPeriod["48hours"], 'prediction_timestamp')}
-                              title="48-Hour PM2.5 Forecast"
-                              dataKey="PM2_5"
-                              color="#f59e0b"
-                              type="line"
-                            />
-                          )}
-                        </div>
-                      )}
+                      {/* Forecast Charts Grid */}
+                      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <MaximizableChart
+                          key="forecast-pm2_5-chart"
+                          data={formatDataForChart(forecastData)}
+                          title="PM2.5 Forecast"
+                          dataKey="PM2_5"
+                          color="#f97316"
+                          type="area"
+                          delay={0}
+                        />
+                        <MaximizableChart
+                          key="forecast-pm10-chart"
+                          data={formatDataForChart(forecastData)}
+                          title="PM10 Forecast"
+                          dataKey="PM10"
+                          color="#8b5cf6"
+                          type="area"
+                          delay={0.1}
+                        />
+                        <MaximizableChart
+                          key="forecast-so2-chart"
+                          data={formatDataForChart(forecastData)}
+                          title="SO2 Forecast"
+                          dataKey="SO2"
+                          color="#ef4444"
+                          type="line"
+                          delay={0.2}
+                        />
+                        <MaximizableChart
+                          key="forecast-no2-chart"
+                          data={formatDataForChart(forecastData)}
+                          title="NO2 Forecast"
+                          dataKey="NO2"
+                          color="#f59e0b"
+                          type="line"
+                          delay={0.3}
+                        />
+                        <MaximizableChart
+                          key="forecast-o3-chart"
+                          data={formatDataForChart(forecastData)}
+                          title="O3 Forecast"
+                          dataKey="O3"
+                          color="#10b981"
+                          type="line"
+                          delay={0.4}
+                        />
+                        <MaximizableChart
+                          key="forecast-co-chart"
+                          data={formatDataForChart(forecastData)}
+                          title="CO Forecast"
+                          dataKey="CO"
+                          color="#6b7280"
+                          type="line"
+                          delay={0.5}
+                        />
+                      </div>
 
                       {/* Prediction Analytics */}
                       <Card className="mt-5 bg-white border-gray-200 shadow-md">
@@ -367,24 +504,24 @@ export default function App() {
                         <CardContent>
                           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
                             <div>
-                              <div className="text-gray-500 mb-1">Next 6H Avg AQI</div>
-                              <div className="text-xl font-bold text-blue-600">{predictionAnalytics.next6hAQI}</div>
-                              <div className="text-xs text-gray-400">predicted average</div>
+                              <div className="text-gray-500 mb-1">Average AQI</div>
+                              <div className="text-xl font-bold text-blue-600">{forecastAnalytics.avgAQI}</div>
+                              <div className="text-xs text-gray-400">48h forecast average</div>
                             </div>
                             <div>
-                              <div className="text-gray-500 mb-1">48H Peak PM2.5</div>
-                              <div className="text-xl font-bold text-orange-600">{predictionAnalytics.peak48hPM25} μg/m³</div>
+                              <div className="text-gray-500 mb-1">Peak PM2.5</div>
+                              <div className="text-xl font-bold text-orange-600">{forecastAnalytics.peakPM25} μg/m³</div>
                               <div className="text-xs text-gray-400">forecast maximum</div>
                             </div>
                             <div>
-                              <div className="text-gray-500 mb-1">Weekly Trend</div>
-                              <div className="text-xl font-bold text-green-600">{predictionAnalytics.weeklyTrend}</div>
-                              <div className="text-xs text-gray-400">air quality direction</div>
+                              <div className="text-gray-500 mb-1">Average CO</div>
+                              <div className="text-xl font-bold text-green-600">{forecastAnalytics.avgCO} ppm</div>
+                              <div className="text-xs text-gray-400">48h forecast average</div>
                             </div>
                             <div>
-                              <div className="text-gray-500 mb-1">Model Confidence</div>
-                              <div className="text-xl font-bold text-teal-600">{predictionAnalytics.modelConfidence}%</div>
-                              <div className="text-xs text-gray-400">prediction accuracy</div>
+                              <div className="text-gray-500 mb-1">Peak NO2</div>
+                              <div className="text-xl font-bold text-teal-600">{forecastAnalytics.peakNO2} ppb</div>
+                              <div className="text-xs text-gray-400">forecast maximum</div>
                             </div>
                           </div>
                         </CardContent>
@@ -395,15 +532,14 @@ export default function App() {
                       <CardContent className="py-12">
                         <div className="text-center text-gray-500">
                           <TrendingUp className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                          <p className="text-lg">No prediction data available</p>
-                          <p className="text-sm mt-1">AI models are processing sensor data</p>
+                          <p className="text-lg">No forecast data available</p>
+                          <p className="text-sm mt-1">AI models are generating predictions</p>
                         </div>
                       </CardContent>
                     </Card>
                   )}
-                </motion.div>
-              </TabsContent>
-            </AnimatePresence>
+              </motion.div>
+            </TabsContent>
           </Tabs>
         </div>
       </div>
