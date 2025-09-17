@@ -1,4 +1,4 @@
-# ProSmart-AQI: Intelligent Air Quality Monitoring & Prediction System (Kunal and Vinit)
+# ProSmart-AQI:  Air Quality Monitoring & Prediction System (Kunal and Vinit)
 
 ![ProSmart-AQI System Architecture](Images/image.png)
 
