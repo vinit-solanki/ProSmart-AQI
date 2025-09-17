@@ -1,0 +1,445 @@
+
+MULTI-PARAMETER AIR QUALITY FORECASTING MODEL - SUMMARY REPORT
+Generated on: September 17, 2025 at 06:19:52
+================================================================================
+
+FORECASTED PARAMETERS: CO, NO2, O3, PM10, PM2_5, SO2, TEMP
+DATA SOURCE: Firebase Real-time Database
+FORECAST HORIZON: 48 hours ahead
+================================================================================
+
+
+CO FORECASTING RESULTS:
+========================================
+PREDICTION STATISTICS:
+  Average Predicted CO: 2593.93
+  Maximum Predicted CO: 3424.16
+  Minimum Predicted CO: 2183.96
+  Standard Deviation: 287.47
+
+NEXT 48 HOURS PREDICTIONS:
+  Hour  1: 2025-09-17 00:00 |  3089.74 | High
+  Hour  2: 2025-09-17 01:00 |  3347.32 | High
+  Hour  3: 2025-09-17 02:00 |  3424.16 | High
+  Hour  4: 2025-09-17 03:00 |  2949.06 | High
+  Hour  5: 2025-09-17 04:00 |  2880.24 | Medium
+  Hour  6: 2025-09-17 05:00 |  2757.00 | Medium
+  Hour  7: 2025-09-17 06:00 |  2563.31 | Medium
+  Hour  8: 2025-09-17 07:00 |  2526.69 | Medium
+  Hour  9: 2025-09-17 08:00 |  2518.65 | Medium
+  Hour 10: 2025-09-17 09:00 |  2501.32 | Medium
+  Hour 11: 2025-09-17 10:00 |  2527.28 | Medium
+  Hour 12: 2025-09-17 11:00 |  2921.41 | High
+  Hour 13: 2025-09-17 12:00 |  2382.72 | Medium
+  Hour 14: 2025-09-17 13:00 |  2372.69 | Medium
+  Hour 15: 2025-09-17 14:00 |  2436.80 | Medium
+  Hour 16: 2025-09-17 15:00 |  2521.94 | Medium
+  Hour 17: 2025-09-17 16:00 |  2621.40 | Medium
+  Hour 18: 2025-09-17 17:00 |  2515.50 | Medium
+  Hour 19: 2025-09-17 18:00 |  2556.51 | Medium
+  Hour 20: 2025-09-17 19:00 |  2550.54 | Medium
+  Hour 21: 2025-09-17 20:00 |  2711.31 | Medium
+  Hour 22: 2025-09-17 21:00 |  2719.26 | Medium
+  Hour 23: 2025-09-17 22:00 |  2719.33 | Medium
+  Hour 24: 2025-09-17 23:00 |  2703.47 | Medium
+  Hour 25: 2025-09-18 00:00 |  2854.13 | Medium
+  Hour 26: 2025-09-18 01:00 |  3091.25 | High
+  Hour 27: 2025-09-18 02:00 |  3161.38 | High
+  Hour 28: 2025-09-18 03:00 |  2722.01 | Medium
+  Hour 29: 2025-09-18 04:00 |  2657.78 | Medium
+  Hour 30: 2025-09-18 05:00 |  2543.36 | Medium
+  Hour 31: 2025-09-18 06:00 |  2364.05 | Medium
+  Hour 32: 2025-09-18 07:00 |  2329.64 | Medium
+  Hour 33: 2025-09-18 08:00 |  2321.58 | Medium
+  Hour 34: 2025-09-18 09:00 |  2304.96 | Low
+  Hour 35: 2025-09-18 10:00 |  2328.23 | Medium
+  Hour 36: 2025-09-18 11:00 |  2690.56 | Medium
+  Hour 37: 2025-09-18 12:00 |  2193.82 | Low
+  Hour 38: 2025-09-18 13:00 |  2183.96 | Low
+  Hour 39: 2025-09-18 14:00 |  2242.33 | Low
+  Hour 40: 2025-09-18 15:00 |  2320.00 | Medium
+  Hour 41: 2025-09-18 16:00 |  2410.80 | Medium
+  Hour 42: 2025-09-18 17:00 |  2312.73 | Medium
+  Hour 43: 2025-09-18 18:00 |  2349.74 | Medium
+  Hour 44: 2025-09-18 19:00 |  2343.55 | Medium
+  Hour 45: 2025-09-18 20:00 |  2490.52 | Medium
+  Hour 46: 2025-09-18 21:00 |  2497.07 | Medium
+  Hour 47: 2025-09-18 22:00 |  2496.38 | Medium
+  Hour 48: 2025-09-18 23:00 |  2481.06 | Medium
+
+NO2 FORECASTING RESULTS:
+========================================
+PREDICTION STATISTICS:
+  Average Predicted NO2: 97.90
+  Maximum Predicted NO2: 99.68
+  Minimum Predicted NO2: 96.12
+  Standard Deviation: 0.93
+
+NEXT 48 HOURS PREDICTIONS:
+  Hour  1: 2025-09-17 00:00 |    96.12 | Unhealthy for Sensitive
+  Hour  2: 2025-09-17 01:00 |    97.16 | Unhealthy for Sensitive
+  Hour  3: 2025-09-17 02:00 |    96.23 | Unhealthy for Sensitive
+  Hour  4: 2025-09-17 03:00 |    97.27 | Unhealthy for Sensitive
+  Hour  5: 2025-09-17 04:00 |    96.34 | Unhealthy for Sensitive
+  Hour  6: 2025-09-17 05:00 |    97.38 | Unhealthy for Sensitive
+  Hour  7: 2025-09-17 06:00 |    96.45 | Unhealthy for Sensitive
+  Hour  8: 2025-09-17 07:00 |    97.49 | Unhealthy for Sensitive
+  Hour  9: 2025-09-17 08:00 |    96.56 | Unhealthy for Sensitive
+  Hour 10: 2025-09-17 09:00 |    97.60 | Unhealthy for Sensitive
+  Hour 11: 2025-09-17 10:00 |    96.66 | Unhealthy for Sensitive
+  Hour 12: 2025-09-17 11:00 |    97.71 | Unhealthy for Sensitive
+  Hour 13: 2025-09-17 12:00 |    96.77 | Unhealthy for Sensitive
+  Hour 14: 2025-09-17 13:00 |    97.82 | Unhealthy for Sensitive
+  Hour 15: 2025-09-17 14:00 |    96.88 | Unhealthy for Sensitive
+  Hour 16: 2025-09-17 15:00 |    97.93 | Unhealthy for Sensitive
+  Hour 17: 2025-09-17 16:00 |    96.99 | Unhealthy for Sensitive
+  Hour 18: 2025-09-17 17:00 |    98.04 | Unhealthy for Sensitive
+  Hour 19: 2025-09-17 18:00 |    97.10 | Unhealthy for Sensitive
+  Hour 20: 2025-09-17 19:00 |    98.15 | Unhealthy for Sensitive
+  Hour 21: 2025-09-17 20:00 |    97.21 | Unhealthy for Sensitive
+  Hour 22: 2025-09-17 21:00 |    98.26 | Unhealthy for Sensitive
+  Hour 23: 2025-09-17 22:00 |    97.31 | Unhealthy for Sensitive
+  Hour 24: 2025-09-17 23:00 |    98.37 | Unhealthy for Sensitive
+  Hour 25: 2025-09-18 00:00 |    97.42 | Unhealthy for Sensitive
+  Hour 26: 2025-09-18 01:00 |    98.48 | Unhealthy for Sensitive
+  Hour 27: 2025-09-18 02:00 |    97.53 | Unhealthy for Sensitive
+  Hour 28: 2025-09-18 03:00 |    98.59 | Unhealthy for Sensitive
+  Hour 29: 2025-09-18 04:00 |    97.64 | Unhealthy for Sensitive
+  Hour 30: 2025-09-18 05:00 |    98.70 | Unhealthy for Sensitive
+  Hour 31: 2025-09-18 06:00 |    97.75 | Unhealthy for Sensitive
+  Hour 32: 2025-09-18 07:00 |    98.80 | Unhealthy for Sensitive
+  Hour 33: 2025-09-18 08:00 |    97.86 | Unhealthy for Sensitive
+  Hour 34: 2025-09-18 09:00 |    98.91 | Unhealthy for Sensitive
+  Hour 35: 2025-09-18 10:00 |    97.96 | Unhealthy for Sensitive
+  Hour 36: 2025-09-18 11:00 |    99.02 | Unhealthy for Sensitive
+  Hour 37: 2025-09-18 12:00 |    98.07 | Unhealthy for Sensitive
+  Hour 38: 2025-09-18 13:00 |    99.13 | Unhealthy for Sensitive
+  Hour 39: 2025-09-18 14:00 |    98.18 | Unhealthy for Sensitive
+  Hour 40: 2025-09-18 15:00 |    99.24 | Unhealthy for Sensitive
+  Hour 41: 2025-09-18 16:00 |    98.29 | Unhealthy for Sensitive
+  Hour 42: 2025-09-18 17:00 |    99.35 | Unhealthy for Sensitive
+  Hour 43: 2025-09-18 18:00 |    98.40 | Unhealthy for Sensitive
+  Hour 44: 2025-09-18 19:00 |    99.46 | Unhealthy for Sensitive
+  Hour 45: 2025-09-18 20:00 |    98.51 | Unhealthy for Sensitive
+  Hour 46: 2025-09-18 21:00 |    99.57 | Unhealthy for Sensitive
+  Hour 47: 2025-09-18 22:00 |    98.61 | Unhealthy for Sensitive
+  Hour 48: 2025-09-18 23:00 |    99.68 | Unhealthy for Sensitive
+
+O3 FORECASTING RESULTS:
+========================================
+PREDICTION STATISTICS:
+  Average Predicted O3: 1.96
+  Maximum Predicted O3: 2.00
+  Minimum Predicted O3: 1.91
+  Standard Deviation: 0.03
+
+NEXT 48 HOURS PREDICTIONS:
+  Hour  1: 2025-09-17 00:00 |     2.00 | Good
+  Hour  2: 2025-09-17 01:00 |     2.00 | Good
+  Hour  3: 2025-09-17 02:00 |     2.00 | Good
+  Hour  4: 2025-09-17 03:00 |     2.00 | Good
+  Hour  5: 2025-09-17 04:00 |     1.99 | Good
+  Hour  6: 2025-09-17 05:00 |     1.99 | Good
+  Hour  7: 2025-09-17 06:00 |     1.99 | Good
+  Hour  8: 2025-09-17 07:00 |     1.99 | Good
+  Hour  9: 2025-09-17 08:00 |     1.99 | Good
+  Hour 10: 2025-09-17 09:00 |     1.98 | Good
+  Hour 11: 2025-09-17 10:00 |     1.98 | Good
+  Hour 12: 2025-09-17 11:00 |     1.98 | Good
+  Hour 13: 2025-09-17 12:00 |     1.98 | Good
+  Hour 14: 2025-09-17 13:00 |     1.98 | Good
+  Hour 15: 2025-09-17 14:00 |     1.97 | Good
+  Hour 16: 2025-09-17 15:00 |     1.97 | Good
+  Hour 17: 2025-09-17 16:00 |     1.97 | Good
+  Hour 18: 2025-09-17 17:00 |     1.97 | Good
+  Hour 19: 2025-09-17 18:00 |     1.97 | Good
+  Hour 20: 2025-09-17 19:00 |     1.97 | Good
+  Hour 21: 2025-09-17 20:00 |     1.96 | Good
+  Hour 22: 2025-09-17 21:00 |     1.96 | Good
+  Hour 23: 2025-09-17 22:00 |     1.96 | Good
+  Hour 24: 2025-09-17 23:00 |     1.96 | Good
+  Hour 25: 2025-09-18 00:00 |     1.96 | Good
+  Hour 26: 2025-09-18 01:00 |     1.95 | Good
+  Hour 27: 2025-09-18 02:00 |     1.95 | Good
+  Hour 28: 2025-09-18 03:00 |     1.95 | Good
+  Hour 29: 2025-09-18 04:00 |     1.95 | Good
+  Hour 30: 2025-09-18 05:00 |     1.95 | Good
+  Hour 31: 2025-09-18 06:00 |     1.94 | Good
+  Hour 32: 2025-09-18 07:00 |     1.94 | Good
+  Hour 33: 2025-09-18 08:00 |     1.94 | Good
+  Hour 34: 2025-09-18 09:00 |     1.94 | Good
+  Hour 35: 2025-09-18 10:00 |     1.94 | Good
+  Hour 36: 2025-09-18 11:00 |     1.93 | Good
+  Hour 37: 2025-09-18 12:00 |     1.93 | Good
+  Hour 38: 2025-09-18 13:00 |     1.93 | Good
+  Hour 39: 2025-09-18 14:00 |     1.93 | Good
+  Hour 40: 2025-09-18 15:00 |     1.93 | Good
+  Hour 41: 2025-09-18 16:00 |     1.92 | Good
+  Hour 42: 2025-09-18 17:00 |     1.92 | Good
+  Hour 43: 2025-09-18 18:00 |     1.92 | Good
+  Hour 44: 2025-09-18 19:00 |     1.92 | Good
+  Hour 45: 2025-09-18 20:00 |     1.92 | Good
+  Hour 46: 2025-09-18 21:00 |     1.92 | Good
+  Hour 47: 2025-09-18 22:00 |     1.91 | Good
+  Hour 48: 2025-09-18 23:00 |     1.91 | Good
+
+PM10 FORECASTING RESULTS:
+========================================
+PREDICTION STATISTICS:
+  Average Predicted PM10: 218.63
+  Maximum Predicted PM10: 224.87
+  Minimum Predicted PM10: 212.49
+  Standard Deviation: 3.99
+
+NEXT 48 HOURS PREDICTIONS:
+  Hour  1: 2025-09-17 00:00 |   219.81 | Unhealthy
+  Hour  2: 2025-09-17 01:00 |   212.49 | Unhealthy
+  Hour  3: 2025-09-17 02:00 |   219.91 | Unhealthy
+  Hour  4: 2025-09-17 03:00 |   212.64 | Unhealthy
+  Hour  5: 2025-09-17 04:00 |   220.09 | Unhealthy
+  Hour  6: 2025-09-17 05:00 |   212.84 | Unhealthy
+  Hour  7: 2025-09-17 06:00 |   220.30 | Unhealthy
+  Hour  8: 2025-09-17 07:00 |   213.06 | Unhealthy
+  Hour  9: 2025-09-17 08:00 |   220.53 | Unhealthy
+  Hour 10: 2025-09-17 09:00 |   213.29 | Unhealthy
+  Hour 11: 2025-09-17 10:00 |   220.75 | Unhealthy
+  Hour 12: 2025-09-17 11:00 |   213.52 | Unhealthy
+  Hour 13: 2025-09-17 12:00 |   220.98 | Unhealthy
+  Hour 14: 2025-09-17 13:00 |   213.75 | Unhealthy
+  Hour 15: 2025-09-17 14:00 |   221.21 | Unhealthy
+  Hour 16: 2025-09-17 15:00 |   213.97 | Unhealthy
+  Hour 17: 2025-09-17 16:00 |   221.44 | Unhealthy
+  Hour 18: 2025-09-17 17:00 |   214.20 | Unhealthy
+  Hour 19: 2025-09-17 18:00 |   221.67 | Unhealthy
+  Hour 20: 2025-09-17 19:00 |   214.43 | Unhealthy
+  Hour 21: 2025-09-17 20:00 |   221.90 | Unhealthy
+  Hour 22: 2025-09-17 21:00 |   214.66 | Unhealthy
+  Hour 23: 2025-09-17 22:00 |   222.12 | Unhealthy
+  Hour 24: 2025-09-17 23:00 |   214.89 | Unhealthy
+  Hour 25: 2025-09-18 00:00 |   222.35 | Unhealthy
+  Hour 26: 2025-09-18 01:00 |   215.12 | Unhealthy
+  Hour 27: 2025-09-18 02:00 |   222.58 | Unhealthy
+  Hour 28: 2025-09-18 03:00 |   215.35 | Unhealthy
+  Hour 29: 2025-09-18 04:00 |   222.81 | Unhealthy
+  Hour 30: 2025-09-18 05:00 |   215.57 | Unhealthy
+  Hour 31: 2025-09-18 06:00 |   223.04 | Unhealthy
+  Hour 32: 2025-09-18 07:00 |   215.80 | Unhealthy
+  Hour 33: 2025-09-18 08:00 |   223.27 | Unhealthy
+  Hour 34: 2025-09-18 09:00 |   216.03 | Unhealthy
+  Hour 35: 2025-09-18 10:00 |   223.49 | Unhealthy
+  Hour 36: 2025-09-18 11:00 |   216.26 | Unhealthy
+  Hour 37: 2025-09-18 12:00 |   223.72 | Unhealthy
+  Hour 38: 2025-09-18 13:00 |   216.49 | Unhealthy
+  Hour 39: 2025-09-18 14:00 |   223.95 | Unhealthy
+  Hour 40: 2025-09-18 15:00 |   216.72 | Unhealthy
+  Hour 41: 2025-09-18 16:00 |   224.18 | Unhealthy
+  Hour 42: 2025-09-18 17:00 |   216.94 | Unhealthy
+  Hour 43: 2025-09-18 18:00 |   224.41 | Unhealthy
+  Hour 44: 2025-09-18 19:00 |   217.17 | Unhealthy
+  Hour 45: 2025-09-18 20:00 |   224.64 | Unhealthy
+  Hour 46: 2025-09-18 21:00 |   217.40 | Unhealthy
+  Hour 47: 2025-09-18 22:00 |   224.87 | Unhealthy
+  Hour 48: 2025-09-18 23:00 |   217.63 | Unhealthy
+
+PM2_5 FORECASTING RESULTS:
+========================================
+PREDICTION STATISTICS:
+  Average Predicted PM2_5: 210.13
+  Maximum Predicted PM2_5: 215.36
+  Minimum Predicted PM2_5: 202.88
+  Standard Deviation: 3.16
+
+NEXT 48 HOURS PREDICTIONS:
+  Hour  1: 2025-09-17 00:00 |   205.44 | Unhealthy
+  Hour  2: 2025-09-17 01:00 |   202.88 | Unhealthy
+  Hour  3: 2025-09-17 02:00 |   209.26 | Unhealthy
+  Hour  4: 2025-09-17 03:00 |   204.91 | Unhealthy
+  Hour  5: 2025-09-17 04:00 |   210.40 | Unhealthy
+  Hour  6: 2025-09-17 05:00 |   205.59 | Unhealthy
+  Hour  7: 2025-09-17 06:00 |   210.85 | Unhealthy
+  Hour  8: 2025-09-17 07:00 |   205.92 | Unhealthy
+  Hour  9: 2025-09-17 08:00 |   211.13 | Unhealthy
+  Hour 10: 2025-09-17 09:00 |   206.18 | Unhealthy
+  Hour 11: 2025-09-17 10:00 |   211.37 | Unhealthy
+  Hour 12: 2025-09-17 11:00 |   206.40 | Unhealthy
+  Hour 13: 2025-09-17 12:00 |   211.59 | Unhealthy
+  Hour 14: 2025-09-17 13:00 |   206.63 | Unhealthy
+  Hour 15: 2025-09-17 14:00 |   211.81 | Unhealthy
+  Hour 16: 2025-09-17 15:00 |   206.85 | Unhealthy
+  Hour 17: 2025-09-17 16:00 |   212.03 | Unhealthy
+  Hour 18: 2025-09-17 17:00 |   207.07 | Unhealthy
+  Hour 19: 2025-09-17 18:00 |   212.26 | Unhealthy
+  Hour 20: 2025-09-17 19:00 |   207.29 | Unhealthy
+  Hour 21: 2025-09-17 20:00 |   212.48 | Unhealthy
+  Hour 22: 2025-09-17 21:00 |   207.51 | Unhealthy
+  Hour 23: 2025-09-17 22:00 |   212.70 | Unhealthy
+  Hour 24: 2025-09-17 23:00 |   207.74 | Unhealthy
+  Hour 25: 2025-09-18 00:00 |   212.92 | Unhealthy
+  Hour 26: 2025-09-18 01:00 |   207.96 | Unhealthy
+  Hour 27: 2025-09-18 02:00 |   213.14 | Unhealthy
+  Hour 28: 2025-09-18 03:00 |   208.18 | Unhealthy
+  Hour 29: 2025-09-18 04:00 |   213.36 | Unhealthy
+  Hour 30: 2025-09-18 05:00 |   208.40 | Unhealthy
+  Hour 31: 2025-09-18 06:00 |   213.59 | Unhealthy
+  Hour 32: 2025-09-18 07:00 |   208.62 | Unhealthy
+  Hour 33: 2025-09-18 08:00 |   213.81 | Unhealthy
+  Hour 34: 2025-09-18 09:00 |   208.84 | Unhealthy
+  Hour 35: 2025-09-18 10:00 |   214.03 | Unhealthy
+  Hour 36: 2025-09-18 11:00 |   209.07 | Unhealthy
+  Hour 37: 2025-09-18 12:00 |   214.25 | Unhealthy
+  Hour 38: 2025-09-18 13:00 |   209.29 | Unhealthy
+  Hour 39: 2025-09-18 14:00 |   214.47 | Unhealthy
+  Hour 40: 2025-09-18 15:00 |   209.51 | Unhealthy
+  Hour 41: 2025-09-18 16:00 |   214.69 | Unhealthy
+  Hour 42: 2025-09-18 17:00 |   209.73 | Unhealthy
+  Hour 43: 2025-09-18 18:00 |   214.92 | Unhealthy
+  Hour 44: 2025-09-18 19:00 |   209.95 | Unhealthy
+  Hour 45: 2025-09-18 20:00 |   215.14 | Unhealthy
+  Hour 46: 2025-09-18 21:00 |   210.17 | Unhealthy
+  Hour 47: 2025-09-18 22:00 |   215.36 | Unhealthy
+  Hour 48: 2025-09-18 23:00 |   210.40 | Unhealthy
+
+SO2 FORECASTING RESULTS:
+========================================
+PREDICTION STATISTICS:
+  Average Predicted SO2: 18.85
+  Maximum Predicted SO2: 31.69
+  Minimum Predicted SO2: 11.45
+  Standard Deviation: 5.64
+
+NEXT 48 HOURS PREDICTIONS:
+  Hour  1: 2025-09-17 00:00 |    18.81 | Medium
+  Hour  2: 2025-09-17 01:00 |    15.68 | Medium
+  Hour  3: 2025-09-17 02:00 |    14.88 | Medium
+  Hour  4: 2025-09-17 03:00 |    14.72 | Medium
+  Hour  5: 2025-09-17 04:00 |    18.55 | Medium
+  Hour  6: 2025-09-17 05:00 |    20.62 | Medium
+  Hour  7: 2025-09-17 06:00 |    15.51 | Medium
+  Hour  8: 2025-09-17 07:00 |    12.64 | Low
+  Hour  9: 2025-09-17 08:00 |    11.56 | Low
+  Hour 10: 2025-09-17 09:00 |    11.45 | Low
+  Hour 11: 2025-09-17 10:00 |    11.98 | Low
+  Hour 12: 2025-09-17 11:00 |    17.70 | Medium
+  Hour 13: 2025-09-17 12:00 |    22.36 | Medium
+  Hour 14: 2025-09-17 13:00 |    22.74 | Medium
+  Hour 15: 2025-09-17 14:00 |    24.57 | High
+  Hour 16: 2025-09-17 15:00 |    23.89 | Medium
+  Hour 17: 2025-09-17 16:00 |    23.45 | Medium
+  Hour 18: 2025-09-17 17:00 |    26.01 | High
+  Hour 19: 2025-09-17 18:00 |    31.57 | High
+  Hour 20: 2025-09-17 19:00 |    30.12 | High
+  Hour 21: 2025-09-17 20:00 |    16.66 | Medium
+  Hour 22: 2025-09-17 21:00 |    14.71 | Medium
+  Hour 23: 2025-09-17 22:00 |    14.75 | Medium
+  Hour 24: 2025-09-17 23:00 |    18.59 | Medium
+  Hour 25: 2025-09-18 00:00 |    15.50 | Medium
+  Hour 26: 2025-09-18 01:00 |    14.73 | Medium
+  Hour 27: 2025-09-18 02:00 |    14.60 | Medium
+  Hour 28: 2025-09-18 03:00 |    18.46 | Medium
+  Hour 29: 2025-09-18 04:00 |    20.55 | Medium
+  Hour 30: 2025-09-18 05:00 |    15.47 | Medium
+  Hour 31: 2025-09-18 06:00 |    12.62 | Low
+  Hour 32: 2025-09-18 07:00 |    11.56 | Low
+  Hour 33: 2025-09-18 08:00 |    11.46 | Low
+  Hour 34: 2025-09-18 09:00 |    12.01 | Low
+  Hour 35: 2025-09-18 10:00 |    17.74 | Medium
+  Hour 36: 2025-09-18 11:00 |    22.42 | Medium
+  Hour 37: 2025-09-18 12:00 |    22.82 | Medium
+  Hour 38: 2025-09-18 13:00 |    24.65 | High
+  Hour 39: 2025-09-18 14:00 |    23.99 | Medium
+  Hour 40: 2025-09-18 15:00 |    23.56 | Medium
+  Hour 41: 2025-09-18 16:00 |    26.13 | High
+  Hour 42: 2025-09-18 17:00 |    31.69 | High
+  Hour 43: 2025-09-18 18:00 |    30.25 | High
+  Hour 44: 2025-09-18 19:00 |    16.81 | Medium
+  Hour 45: 2025-09-18 20:00 |    14.86 | Medium
+  Hour 46: 2025-09-18 21:00 |    14.91 | Medium
+  Hour 47: 2025-09-18 22:00 |    18.76 | Medium
+  Hour 48: 2025-09-18 23:00 |    15.67 | Medium
+
+TEMP FORECASTING RESULTS:
+========================================
+PREDICTION STATISTICS:
+  Average Predicted TEMP: -5.19
+  Maximum Predicted TEMP: 2.22
+  Minimum Predicted TEMP: -9.65
+  Standard Deviation: 3.90
+
+NEXT 48 HOURS PREDICTIONS:
+  Hour  1: 2025-09-17 00:00 |    -6.31 | Medium
+  Hour  2: 2025-09-17 01:00 |    -7.40 | Medium
+  Hour  3: 2025-09-17 02:00 |    -8.00 | Medium
+  Hour  4: 2025-09-17 03:00 |    -8.24 | Medium
+  Hour  5: 2025-09-17 04:00 |    -7.45 | Medium
+  Hour  6: 2025-09-17 05:00 |    -7.36 | Medium
+  Hour  7: 2025-09-17 06:00 |    -7.41 | Medium
+  Hour  8: 2025-09-17 07:00 |    -8.00 | Medium
+  Hour  9: 2025-09-17 08:00 |    -8.85 | Medium
+  Hour 10: 2025-09-17 09:00 |    -9.10 | Low
+  Hour 11: 2025-09-17 10:00 |    -8.75 | Medium
+  Hour 12: 2025-09-17 11:00 |    -8.53 | Medium
+  Hour 13: 2025-09-17 12:00 |    -7.29 | Medium
+  Hour 14: 2025-09-17 13:00 |    -4.16 | Medium
+  Hour 15: 2025-09-17 14:00 |    -2.07 | Medium
+  Hour 16: 2025-09-17 15:00 |    -0.44 | High
+  Hour 17: 2025-09-17 16:00 |     1.08 | High
+  Hour 18: 2025-09-17 17:00 |     1.63 | High
+  Hour 19: 2025-09-17 18:00 |     2.22 | High
+  Hour 20: 2025-09-17 19:00 |     1.61 | High
+  Hour 21: 2025-09-17 20:00 |    -0.60 | High
+  Hour 22: 2025-09-17 21:00 |    -2.86 | Medium
+  Hour 23: 2025-09-17 22:00 |    -6.03 | Medium
+  Hour 24: 2025-09-17 23:00 |    -5.85 | Medium
+  Hour 25: 2025-09-18 00:00 |    -7.08 | Medium
+  Hour 26: 2025-09-18 01:00 |    -8.13 | Medium
+  Hour 27: 2025-09-18 02:00 |    -8.71 | Medium
+  Hour 28: 2025-09-18 03:00 |    -8.92 | Medium
+  Hour 29: 2025-09-18 04:00 |    -8.10 | Medium
+  Hour 30: 2025-09-18 05:00 |    -7.99 | Medium
+  Hour 31: 2025-09-18 06:00 |    -8.01 | Medium
+  Hour 32: 2025-09-18 07:00 |    -8.59 | Medium
+  Hour 33: 2025-09-18 08:00 |    -9.42 | Low
+  Hour 34: 2025-09-18 09:00 |    -9.65 | Low
+  Hour 35: 2025-09-18 10:00 |    -9.28 | Low
+  Hour 36: 2025-09-18 11:00 |    -9.04 | Medium
+  Hour 37: 2025-09-18 12:00 |    -7.78 | Medium
+  Hour 38: 2025-09-18 13:00 |    -4.64 | Medium
+  Hour 39: 2025-09-18 14:00 |    -2.53 | Medium
+  Hour 40: 2025-09-18 15:00 |    -0.89 | High
+  Hour 41: 2025-09-18 16:00 |     0.65 | High
+  Hour 42: 2025-09-18 17:00 |     1.20 | High
+  Hour 43: 2025-09-18 18:00 |     1.81 | High
+  Hour 44: 2025-09-18 19:00 |     1.21 | High
+  Hour 45: 2025-09-18 20:00 |    -0.99 | High
+  Hour 46: 2025-09-18 21:00 |    -3.24 | Medium
+  Hour 47: 2025-09-18 22:00 |    -6.40 | Medium
+  Hour 48: 2025-09-18 23:00 |    -6.21 | Medium
+
+================================================================================
+KEY INSIGHTS:
+- Model Type: Time Series Forecasting using PyCaret
+- Parameters Forecasted: 7 air quality parameters
+- Data Source: Firebase Real-time Database (history collection)
+- Forecast Horizon: 48 hours ahead
+- Data Processing: Automated cleaning and feature engineering
+- Validation: Cross-validation with sliding window approach
+- Models Used: 
+  * ARIMA: O3, PM2.5, PM10, SO2, TEMP
+  * Best Model (ETS/ARIMA): CO, NO2
+
+GENERATED FILES:
+- 48-hour forecast visualization images for all parameters
+
+- forecast_images/ (Forecast visualization images for all parameters)
+- forecast_reports/ (This summary report)
+- Firebase /forecast collection (Updated with new predictions - overwrites existing data)
+
+IMPORTANT NOTES:
+- These predictions are based on historical patterns and should be used as guidance only
+- Air quality can be affected by sudden weather changes, traffic patterns, and industrial activities
+- For critical decisions, please consult official air quality monitoring services
+- Model performance may vary depending on data quality and external factors
+- Each parameter uses its own optimized forecasting model
+
+Report generated by PyCaret Multi-Parameter Time Series Forecasting Pipeline
+© 2024 ProSmart AQI Forecasting System

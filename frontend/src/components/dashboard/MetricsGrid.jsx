@@ -38,63 +38,90 @@ const MetricCard = React.memo(({ title, value, unit, icon: Icon, color, trend, d
 
 MetricCard.displayName = 'MetricCard';
 
-const MetricsGrid = React.memo(({ sensorData }) => {
+const MetricsGrid = React.memo(({ sensorData, historicalData = [] }) => {
+  
+  // Function to calculate 24-hour trend for a specific sensor
+  const calculateTrend = React.useCallback((sensorKey) => {
+    if (!sensorData || !historicalData.length) return 0;
+    
+    const current = sensorData[sensorKey] || 0;
+    const currentTime = new Date(sensorData.timestamp);
+    const twentyFourHoursAgo = new Date(currentTime.getTime() - (24 * 60 * 60 * 1000));
+    
+    // Find data point closest to 24 hours ago
+    let previousValue = null;
+    let closestTimeDiff = Infinity;
+    
+    for (let i = 0; i < historicalData.length; i++) {
+      const dataTime = new Date(historicalData[i]?.timestamp);
+      const timeDiff = Math.abs(dataTime.getTime() - twentyFourHoursAgo.getTime());
+      
+      if (timeDiff < closestTimeDiff) {
+        closestTimeDiff = timeDiff;
+        previousValue = historicalData[i][sensorKey] || 0;
+      }
+    }
+    
+    if (!previousValue || previousValue === 0) return 0;
+    return ((current - previousValue) / previousValue * 100).toFixed(1);
+  }, [sensorData, historicalData]);
+  
   const metrics = React.useMemo(() => [
     {
       title: "Temperature",
-      value: sensorData?.temperature?.toFixed(1),
+      value: typeof sensorData?.TEMP === 'number' ? sensorData.TEMP.toFixed(1) : undefined,
       unit: "°C",
       icon: Thermometer,
       color: "text-orange-500",
-      trend: 2.1
-    },
-    {
-      title: "Humidity", 
-      value: sensorData?.humidity?.toFixed(1),
-      unit: "%",
-      icon: Droplets,
-      color: "text-blue-500",
-      trend: -0.8
+      trend: parseFloat(calculateTrend('TEMP'))
     },
     {
       title: "PM2.5",
-      value: sensorData?.PM2_5?.toFixed(2),
+      value: typeof sensorData?.PM2_5 === 'number' ? sensorData.PM2_5.toFixed(2) : undefined,
       unit: "μg/m³",
       icon: Wind,
       color: "text-purple-500",
-      trend: 5.2
+      trend: parseFloat(calculateTrend('PM2_5'))
     },
     {
-      title: "VOCs",
-      value: sensorData?.VOCs?.toFixed(2),
-      unit: "ppb",
+      title: "CO",
+      value: typeof sensorData?.CO === 'number' ? sensorData.CO.toFixed(2) : undefined,
+      unit: "ppm",
       icon: Activity,
       color: "text-green-500",
-      trend: -1.3
+      trend: parseFloat(calculateTrend('CO'))
     },
     {
-      title: "CO2",
-      value: sensorData?.CO2?.toFixed(0),
-      unit: "ppm",
+      title: "NO2",
+      value: typeof sensorData?.NO2 === 'number' ? sensorData.NO2.toFixed(2) : undefined,
+      unit: "ppb",
       icon: Zap,
       color: "text-yellow-500", 
-      trend: 3.7
+      trend: parseFloat(calculateTrend('NO2'))
     },
     {
-      title: "NOx",
-      value: sensorData?.NOx?.toFixed(2),
+      title: "O3",
+      value: typeof sensorData?.O3 === 'number' ? sensorData.O3.toFixed(2) : undefined,
       unit: "ppb",
       icon: Gauge,
       color: "text-red-500",
-      trend: 1.9
+      trend: parseFloat(calculateTrend('O3'))
+    },
+    {
+      title: "PM10",
+      value: typeof sensorData?.PM10 === 'number' ? sensorData.PM10.toFixed(2) : undefined,
+      unit: "μg/m³",
+      icon: Wind,
+      color: "text-indigo-500",
+      trend: parseFloat(calculateTrend('PM10'))
     }
-  ], [sensorData]);
+  ], [sensorData, calculateTrend]);
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
       {metrics.map((metric, index) => (
         <MetricCard
-          key={metric.title}
+          key={`${metric.title}-${index}`}
           {...metric}
           delay={index * 0.1}
         />

@@ -13,13 +13,21 @@ import {
 } from 'recharts';
 import { motion } from "framer-motion";
 
-const SensorChart = React.memo(({ data, title, dataKey, color = "#0ea5e9", type = "line" }) => {
+const SensorChart = React.memo(({ data, title, dataKey, color = "#0ea5e9", type = "line", showToolbar = false, height = "100%" }) => {
   const chartData = React.useMemo(() => {
-    return data?.map(item => ({
-      time: new Date(item.timestamp).toLocaleTimeString(),
-      value: item[dataKey],
-      fullDate: new Date(item.timestamp).toLocaleString()
-    })) || [];
+    return data?.map((item, index) => {
+      const date = new Date(item.timestamp);
+      // Check if date is valid
+      if (isNaN(date.getTime())) {
+        return null;
+      }
+      return {
+        key: `${item.timestamp || 'unknown'}-${index}`, // Add unique key for React
+        time: date.toLocaleTimeString(),
+        value: item[dataKey] || 0,
+        fullDate: date.toLocaleString()
+      };
+    }).filter(Boolean) || [];
   }, [data, dataKey]);
 
   const CustomTooltip = React.useCallback(({ active, payload, label }) => {
@@ -36,79 +44,104 @@ const SensorChart = React.memo(({ data, title, dataKey, color = "#0ea5e9", type 
     return null;
   }, [title, color]);
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <Card className="bg-white border-gray-200 shadow-md">
-        <CardHeader>
-          <CardTitle className="text-gray-900 text-lg">{title}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="h-64 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              {type === "area" ? (
-                <AreaChart data={chartData}>
-                  <defs>
-                    <linearGradient id={`gradient-${dataKey}`} x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor={color} stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor={color} stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis 
-                    dataKey="time" 
-                    stroke="#6b7280"
-                    fontSize={12}
-                    tickLine={false}
-                  />
-                  <YAxis 
-                    stroke="#6b7280"
-                    fontSize={12}
-                    tickLine={false}
-                  />
-                  <Tooltip content={<CustomTooltip />} />
-                  <Area
-                    type="monotone"
-                    dataKey="value"
-                    stroke={color}
-                    strokeWidth={2}
-                    fill={`url(#gradient-${dataKey})`}
-                  />
-                </AreaChart>
-              ) : (
-                <LineChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis 
-                    dataKey="time" 
-                    stroke="#6b7280"
-                    fontSize={12}
-                    tickLine={false}
-                  />
-                  <YAxis 
-                    stroke="#6b7280"
-                    fontSize={12}
-                    tickLine={false}
-                  />
-                  <Tooltip content={<CustomTooltip />} />
-                  <Line
-                    type="monotone"
-                    dataKey="value"
-                    stroke={color}
-                    strokeWidth={2}
-                    dot={false}
-                    activeDot={{ r: 4, fill: color }}
-                  />
-                </LineChart>
-              )}
-            </ResponsiveContainer>
-          </div>
-        </CardContent>
-      </Card>
-    </motion.div>
-  );
+  const renderChart = () => {
+    if (type === "area") {
+      return (
+        <AreaChart data={chartData}>
+          <defs>
+            <linearGradient id={`gradient-${dataKey}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor={color} stopOpacity={0.3}/>
+              <stop offset="95%" stopColor={color} stopOpacity={0}/>
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+          <XAxis 
+            dataKey="time" 
+            stroke="#6b7280"
+            fontSize={12}
+            tickLine={false}
+          />
+          <YAxis 
+            stroke="#6b7280"
+            fontSize={12}
+            tickLine={false}
+          />
+          <Tooltip content={<CustomTooltip />} />
+          <Area
+            type="monotone"
+            dataKey="value"
+            stroke={color}
+            strokeWidth={2}
+            fill={`url(#gradient-${dataKey})`}
+          />
+        </AreaChart>
+      );
+    } else {
+      return (
+        <LineChart data={chartData}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+          <XAxis 
+            dataKey="time" 
+            stroke="#6b7280"
+            fontSize={12}
+            tickLine={false}
+          />
+          <YAxis 
+            stroke="#6b7280"
+            fontSize={12}
+            tickLine={false}
+          />
+          <Tooltip content={<CustomTooltip />} />
+          <Line
+            type="monotone"
+            dataKey="value"
+            stroke={color}
+            strokeWidth={2}
+            dot={false}
+            activeDot={{ r: 4, fill: color }}
+          />
+        </LineChart>
+      );
+    }
+  };
+
+  if (title) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full"
+        style={{ height }}
+      >
+        <Card className="bg-white border-gray-200 shadow-md h-full">
+          <CardHeader>
+            <CardTitle className="text-gray-900 text-lg">{title}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-64 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                {renderChart()}
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+    );
+  } else {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full h-full"
+      >
+        <ResponsiveContainer width="100%" height="100%">
+          {renderChart()}
+        </ResponsiveContainer>
+      </motion.div>
+    );
+  }
 });
 
 SensorChart.displayName = 'SensorChart';
